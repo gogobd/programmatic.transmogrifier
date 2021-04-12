@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
-from collective.transmogrifier.interfaces import ISection
-from collective.transmogrifier.interfaces import ISectionBlueprint
-from collective.transmogrifier.utils import traverse
-from datetime import date
-from plone.event.utils import pydt
-from zope.interface import classProvides
-from zope.interface import implements
 import logging
 import re
+from datetime import date
+
+from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
+from collective.transmogrifier.utils import traverse
+from DateTime import DateTime
+from plone.event.utils import pydt
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+from zope.interface import classProvides, implementer, implements, provider
 
 try:
     from geopy.geocoders import Nominatim
@@ -366,10 +365,11 @@ def layout_mapper(item):
 
     return item
 
-
+@implementer(ISection)
+@provider(ISectionBlueprint)
 class CatalogSource(object):
-    classProvides(ISectionBlueprint)
-    implements(ISection)
+#    classProvides(ISectionBlueprint)
+#    implements(ISection)
 
     def __init__(self, transmogrifier, name, options, previous):
         self.transmogrifier = transmogrifier
@@ -391,12 +391,13 @@ class CatalogSource(object):
         for item in res:
             yield item
 
-
+@implementer(ISection)
+@provider(ISectionBlueprint)
 class TypeMapper(object):
     """Maps obsolete types to new ones.
     """
-    classProvides(ISectionBlueprint)
-    implements(ISection)
+#    classProvides(ISectionBlueprint)
+#    implements(ISection)
 
     def __init__(self, transmogrifier, name, options, previous):
         self.transmogrifier = transmogrifier
@@ -716,12 +717,13 @@ class TypeMapper(object):
             else:
                 continue
 
-
+@implementer(ISection)
+@provider(ISectionBlueprint)
 class LatLngUpdater(object):
     """Sets collective.geolocationbehavior on the item.
     """
-    classProvides(ISectionBlueprint)
-    implements(ISection)
+#    classProvides(ISectionBlueprint)
+#    implements(ISection)
 
     def __init__(self, transmogrifier, name, options, previous):
         self.previous = previous
@@ -757,10 +759,11 @@ class LatLngUpdater(object):
 
             yield item
 
-
+@implementer(ISection)
+@provider(ISectionBlueprint)
 class RemoveCreator(object):
-    classProvides(ISectionBlueprint)
-    implements(ISection)
+#    classProvides(ISectionBlueprint)
+#    implements(ISection)
 
     def __init__(self, transmogrifier, name, options, previous):
         self.previous = previous
@@ -785,9 +788,11 @@ class RemoveCreator(object):
             yield item
 
 
+@implementer(ISection)
+@provider(ISectionBlueprint)
 class StateFixer(object):
-    classProvides(ISectionBlueprint)
-    implements(ISection)
+#    classProvides(ISectionBlueprint)
+#    implements(ISection)
 
     def __init__(self, transmogrifier, name, options, previous):
         self.previous = previous
